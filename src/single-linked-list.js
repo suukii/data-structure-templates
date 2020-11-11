@@ -1,8 +1,10 @@
 class LinkedList {
-    constructor() {
+    constructor(arr) {
         this.head = null;
         this.tail = null;
         this.length = 0;
+
+        if (Array.isArray(arr)) this._buildLinkedList(arr);
     }
     push(value) {
         const node = new Node(value);
@@ -56,14 +58,25 @@ class LinkedList {
         this.length += addend;
         if (this.length < 0) this.length = 0;
     }
+
+    _buildLinkedList(arr) {
+        this.head = arr.reduceRight((list, item) => {
+            const node = new Node(item, list);
+            if (!list) this.tail = node;
+            return node;
+        }, null);
+    }
 }
 
 class Node {
-    constructor(value) {
+    constructor(value, next = null) {
         this.value = value;
-        this.next = null;
+        this.next = next;
     }
 }
+
+// use
+// const list = new LinkedList([1, 2, 3, 4]);
 
 module.exports = {
     LinkedList,
