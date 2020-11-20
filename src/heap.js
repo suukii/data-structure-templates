@@ -1,6 +1,8 @@
 class Heap {
-    constructor(list = []) {
+    constructor(list = [], comparator) {
         this.list = list;
+        this.comparator = comparator;
+
         this.init();
     }
 
@@ -38,16 +40,24 @@ class Heap {
 }
 
 class MaxHeap extends Heap {
-    constructor(list) {
-        super(list);
+    constructor(list, comparator) {
+        if (typeof comparator != 'function') {
+            comparator = function comparator(target, compared) {
+                return target < compared;
+            };
+        }
+        super(list, comparator);
     }
 
     heapify(arr, size, i) {
         let largest = i;
         const left = Math.floor(i * 2 + 1);
         const right = Math.floor(i * 2 + 2);
-        if (left < size && arr[largest] < arr[left]) largest = left;
-        if (right < size && arr[largest] < arr[right]) largest = right;
+
+        if (left < size && this.comparator(arr[largest], arr[left]))
+            largest = left;
+        if (right < size && this.comparator(arr[largest], arr[right]))
+            largest = right;
 
         if (largest !== i) {
             [arr[largest], arr[i]] = [arr[i], arr[largest]];
@@ -58,15 +68,22 @@ class MaxHeap extends Heap {
 
 class MinHeap extends Heap {
     constructor(list) {
-        super(list);
+        if (typeof comparator != 'function') {
+            comparator = function comparator(target, compared) {
+                return target > compared;
+            };
+        }
+        super(list, comparator);
     }
 
     heapify(arr, size, i) {
         let smallest = i;
         const left = Math.floor(i * 2 + 1);
         const right = Math.floor(i * 2 + 2);
-        if (left < size && arr[smallest] > arr[left]) smallest = left;
-        if (right < size && arr[smallest] > arr[right]) smallest = right;
+        if (left < size && this.comparator(arr[largest], arr[left]))
+            smallest = left;
+        if (right < size && this.comparator(arr[largest], arr[right]))
+            smallest = right;
 
         if (smallest !== i) {
             [arr[smallest], arr[i]] = [arr[i], arr[smallest]];
