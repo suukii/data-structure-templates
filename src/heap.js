@@ -42,8 +42,8 @@ class Heap {
 class MaxHeap extends Heap {
     constructor(list, comparator) {
         if (typeof comparator != 'function') {
-            comparator = function comparator(target, compared) {
-                return target < compared;
+            comparator = function comparator(inserted, compared) {
+                return inserted < compared;
             };
         }
         super(list, comparator);
@@ -67,10 +67,10 @@ class MaxHeap extends Heap {
 }
 
 class MinHeap extends Heap {
-    constructor(list) {
+    constructor(list, comparator) {
         if (typeof comparator != 'function') {
-            comparator = function comparator(target, compared) {
-                return target > compared;
+            comparator = function comparator(inserted, compared) {
+                return inserted > compared;
             };
         }
         super(list, comparator);
@@ -80,9 +80,9 @@ class MinHeap extends Heap {
         let smallest = i;
         const left = Math.floor(i * 2 + 1);
         const right = Math.floor(i * 2 + 2);
-        if (left < size && this.comparator(arr[largest], arr[left]))
+        if (left < size && this.comparator(arr[smallest], arr[left]))
             smallest = left;
-        if (right < size && this.comparator(arr[largest], arr[right]))
+        if (right < size && this.comparator(arr[smallest], arr[right]))
             smallest = right;
 
         if (smallest !== i) {
