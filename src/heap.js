@@ -34,6 +34,19 @@ class Heap {
         return returnItem;
     }
 
+    replace(replaced, target) {
+        const index = this.list.findIndex(n => n === replaced);
+        if (index > -1) {
+            this.list[index] = target;
+            const size = this.size();
+            for (let i = Math.floor(size / 2) - 1; i >= 0; i--) {
+                this.heapify(this.list, size, i);
+            }
+            return true;
+        }
+        return false;
+    }
+
     size() {
         return this.list.length;
     }
